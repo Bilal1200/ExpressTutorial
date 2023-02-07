@@ -11,7 +11,8 @@ app.post('/checkpost' , (req,res)=>{
     const {name} = req.body;
     res.send(`Wellcome ${name}`);
 })
-
+const path = require('path')
+app.use('/static', express.static(path.join(__dirname, 'image.jpg')))
 // get data at root level
 
 app.get("/" ,( req,res) => {
