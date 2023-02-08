@@ -21,16 +21,26 @@ crudroutes.route("/:id").get(function (req, res) {
     }
   });
 });
+crudroutes.post('/todoss', (req,res) => {
+  if(req.body){
+      Todo.create(req.body)
+          .then(data => res.json(data))
+  } else {
+      res.json({
+          error: "The input field is empty"
+      })
+  }
+});
 
 crudroutes.route("/add").post(function (req, res) {
-  let cruds = new crud(req.body);
-  cruds
+  let cruds = new crud(req.body); 
+   cruds
     .save()
     .then((user) => {
       res.status(200).send({ cruds: "added successfully" });
     })
     .catch((err) => {
-      res.status(400).send("adding new   failed");
+      res.status(400).send("adding new failed");
     });
 });
 

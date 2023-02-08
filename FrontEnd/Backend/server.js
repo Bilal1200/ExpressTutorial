@@ -2,11 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-const PORT = 3000;
+const PORT = 4000;
 const userModel = require("./model");
 const mongoose = require("mongoose");
 const todoRoutes = require("./Crud/CrudRoutes");
-
+const Signup = require("./Crud/Signuproutes");
 app.use(express.json());
 const dotenv = require("dotenv");
 
@@ -66,6 +66,7 @@ db.once("open", function () {
 //   res.status(200).send("Hello, world!");
 // });
 app.use("/todos", todoRoutes);
+app.use("/signup", Signup);
 
 app.listen(PORT, (error) => {
   if (!error)
