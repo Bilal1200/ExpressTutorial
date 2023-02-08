@@ -1,13 +1,18 @@
 const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
 const PORT = 3000;
 const userModel = require("./model");
 const mongoose = require("mongoose");
+const todoRoutes = require("./Crud/CrudRoutes");
 
 app.use(express.json());
 const dotenv = require("dotenv");
 
 dotenv.config();
+app.use(cors());
+app.use(bodyParser.json());
 mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
@@ -20,46 +25,47 @@ db.once("open", function () {
 
 // post api to send data to server
 
-app.post("/add_user", async (req, res) => {
-  const user = new userModel(req.body);
-  try {
-    await user.save();
-    res.send(user);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
+// app.post("/add_user", async (req, res) => {
+//   const user = new userModel(req.body);
+//   try {
+//     await user.save();
+//     res.send(user);
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// });
 
-app.get ("/add_user" , async (req, res) => {
-    const user = await userModel.find({});
-    try{
-        res.send(user);
-    } catch (err) {
-        res.status(500).send(err);
-    }
-    }
+// app.get ("/add_user" , async (req, res) => {
+//     const user = await userModel.find({});
+//     try{
+//         res.send(user);
+//     } catch (err) {
+//         res.status(500).send(err);
+//     }
+//     }
     
-    )
+//     )
 
-app.post("/checkpost", (req, res) => {
-  const { name } = req.body;
-  res.send(`Wellcome ${name}`);
-});
+// app.post("/checkpost", (req, res) => {
+//   const { name } = req.body;
+//   res.send(`Wellcome ${name}`);
+// });
 // const path = require('path')
 // app.use('/static', express.static(path.join(__dirname, 'image.jpg')))
 // get data at root level
 
-app.get("/", (req, res) => {
-  res.status(200);
-  res.send("Wellcome to rool level of server");
-});
+// app.get("/", (req, res) => {
+//   res.status(200);
+//   res.send("Wellcome to rool level of server");
+// });
 
 // getting data on diffrent route
 
-app.get("/hello", (req, res) => {
-  res.set("Content-Type", "text/html");
-  res.status(200).send("Hello, world!");
-});
+// app.get("/hello", (req, res) => {
+//   res.set("Content-Type", "text/html");
+//   res.status(200).send("Hello, world!");
+// });
+app.use("/todos", todoRoutes);
 
 app.listen(PORT, (error) => {
   if (!error)
